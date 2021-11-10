@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.validation.constraints.Pattern;
 
 import org.ocpsoft.rewrite.annotation.Join;
 import org.ocpsoft.rewrite.el.ELBeanName;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import tn.esprit.spring.dtoEntities.EmployeDTo;
 import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Entreprise;
@@ -46,6 +46,7 @@ public class ControllerEmployeImpl  {
 	private List<Employe> employes; 
 
 	private Integer employeIdToBeUpdated; // getter et setter
+    public static final String URL  ="/login.xhtml?faces-redirect=true";
 
 
 	public String doLogin() {
@@ -77,15 +78,15 @@ public class ControllerEmployeImpl  {
 
 	public String addEmploye() {
 
-		if (authenticatedUser==null || !loggedIn) return "/login.xhtml?faces-redirect=true";
+		if (authenticatedUser==null || !loggedIn) return URL;
 
-		employeService.addOrUpdateEmploye(new Employe(nom, prenom, email, password, actif, role)); 
+		employeService.addOrUpdateEmploye(new EmployeDTo(nom, prenom, email, password, actif, role)); 
 		return "null"; 
 	}  
 
 	public String removeEmploye(int employeId) {
 		String navigateTo = "null";
-		if (authenticatedUser==null || !loggedIn) return "/login.xhtml?faces-redirect=true";
+		if (authenticatedUser==null || !loggedIn) return URL;
 
 		employeService.deleteEmployeById(employeId);
 		return navigateTo; 
@@ -94,7 +95,7 @@ public class ControllerEmployeImpl  {
 	public String displayEmploye(Employe empl) 
 	{
 		String navigateTo = "null";
-		if (authenticatedUser==null || !loggedIn) return "/login.xhtml?faces-redirect=true";
+		if (authenticatedUser==null || !loggedIn) return URL;
 
 
 		this.setPrenom(empl.getPrenom());
@@ -113,9 +114,9 @@ public class ControllerEmployeImpl  {
 	{ 
 		String navigateTo = "null";
 		
-		if (authenticatedUser==null || !loggedIn) return "/login.xhtml?faces-redirect=true";
+		if (authenticatedUser==null || !loggedIn) return URL;
 
-		employeService.addOrUpdateEmploye(new Employe(employeIdToBeUpdated, nom, prenom, email, password, actif, role)); 
+		employeService.addOrUpdateEmploye(new EmployeDTo(employeIdToBeUpdated, nom, prenom, email, password, actif, role)); 
 
 		return navigateTo; 
 
@@ -161,7 +162,7 @@ public class ControllerEmployeImpl  {
 		this.loggedIn = loggedIn;
 	}
 
-	public int ajouterEmploye(Employe employe)
+	public int ajouterEmploye(EmployeDTo  employe)
 	{
 		employeService.addOrUpdateEmploye(employe);
 		return employe.getId();

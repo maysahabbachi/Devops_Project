@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tn.esprit.spring.converter.EmployeConverter;
+import tn.esprit.spring.dtoEntities.EmployeDTo;
 import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Employe;
@@ -35,6 +37,8 @@ public class EmployeServiceImpl implements IEmployeService {
 	ContratRepository contratRepoistory;
 	@Autowired
 	TimesheetRepository timesheetRepository;
+	 @Autowired
+	 EmployeConverter converter;
 
 	@Override
 	public Employe authenticate(String login, String password) {
@@ -43,9 +47,10 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	@Override
-	public int addOrUpdateEmploye(Employe employe) {
+	public Integer addOrUpdateEmploye(EmployeDTo  employe) {
 		l.info("START addOrUpdateEmploye ");
-		employeRepository.save(employe);
+		Employe emp=converter.empTodo(employe);
+		employeRepository.save(emp);
 		return employe.getId();
 	}
 
@@ -98,21 +103,17 @@ public class EmployeServiceImpl implements IEmployeService {
 	// Tablesapce (espace disque) 
 
 	public int ajouterContrat(Contrat contrat) {
-		l.info("Starting Add contract");
 		contratRepoistory.save(contrat);
-		l.info("Contract added");
 		return contrat.getReference();
 	}
 
 	public void affecterContratAEmploye(int contratId, int employeId) {
-		l.info("Starting affecterContratAEmploye");
-
 		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
 		Employe employeManagedEntity = employeRepository.findById(employeId).get();
-		l.trace("Find ContactByid and  EmployeById");
+
 		contratManagedEntity.setEmploye(employeManagedEntity);
-		l.info("affecterContratAEmploye Done");
 		contratRepoistory.save(contratManagedEntity);
+		
 	}
 
 	public String getEmployePrenomById(int employeId) {
@@ -136,10 +137,8 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void deleteContratById(int contratId) {
-		l.info("Starting deleteContratById with id : "+contratId);
 		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
 		contratRepoistory.delete(contratManagedEntity);
-		l.info("deleteContratById with id : "+contratId + "is Done");
 
 	}
 
@@ -167,8 +166,7 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	}
 	public void deleteAllContratJPQL() {
-		l.info("Starting deleteAllContratJPQL");
-		employeRepository.deleteAllContratJPQL();
+        employeRepository.deleteAllContratJPQL();
 	}
 
 	public float getSalaireByEmployeIdJPQL(int employeId) {
@@ -183,7 +181,7 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	public List<Timesheet> getTimesheetsByMissionAndDate(Employe employe, Mission mission, Date dateDebut,
 			Date dateFin) {
-		l.info("Starting  getTimesheetsByMissionAndDate");
+		l.info("Starting getTimesheetsByMissionAndDate");
 		return timesheetRepository.getTimesheetsByMissionAndDate(employe, mission, dateDebut, dateFin);
 	}
 
