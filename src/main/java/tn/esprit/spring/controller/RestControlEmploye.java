@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.entities.Mission;
@@ -23,7 +22,6 @@ import tn.esprit.spring.services.IEntrepriseService;
 import tn.esprit.spring.services.ITimesheetService;
 import tn.esprit.spring.dtoEntities.EmployeDTo;
 import tn.esprit.spring.converter.EmployeConverter;
-import tn.esprit.spring.converter.ContratConverter;
 @RestController
 public class RestControlEmploye {
 
@@ -70,19 +68,8 @@ public class RestControlEmploye {
 
 	// http://localhost:8081/SpringMVC/servlet/ajouterContrat
 	
-	@PostMapping("/ajouterContrat")
-	@ResponseBody
-	public int ajouterContrat(@RequestBody Contrat contrat) {
-		iemployeservice.ajouterContrat(contrat);
-		return contrat.getReference();
-	}
+
 	
-	// http://localhost:8081/SpringMVC/servlet/affecterContratAEmploye/6/1
-   @PutMapping(value = "/affecterContratAEmploye/{idcontrat}/{idemp}") 
-	public void affecterContratAEmploye(@PathVariable("idcontrat")int contratId, @PathVariable("idemp")int employeId)
-	{
-		iemployeservice.affecterContratAEmploye(contratId, employeId);
-	}
 
 	
    
@@ -101,12 +88,7 @@ public class RestControlEmploye {
 		
 	}
     
- // URL : http://localhost:8081/SpringMVC/servlet/deleteContratById/2
-    @DeleteMapping("/deleteContratById/{idcontrat}") 
-	@ResponseBody
-	public void deleteContratById(@PathVariable("idcontrat")int contratId) {
-		iemployeservice.deleteContratById(contratId);
-	}
+
 
     
     // URL : http://localhost:8081/SpringMVC/servlet/getNombreEmployeJPQL
@@ -141,13 +123,7 @@ public class RestControlEmploye {
 		
 	}
 
-    // URL : http://localhost:8081/SpringMVC/servlet/deleteAllContratJPQL
-    @DeleteMapping("/deleteAllContratJPQL") 
-	@ResponseBody
-	public void deleteAllContratJPQL() {
-		iemployeservice.deleteAllContratJPQL();
-		
-	}
+
 
     // URL : http://localhost:8081/SpringMVC/servlet/getSalaireByEmployeIdJPQL/2
     @GetMapping(value = "getSalaireByEmployeIdJPQL/{idemp}")

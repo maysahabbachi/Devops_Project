@@ -17,7 +17,7 @@ import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.services.IEmployeService;
 import tn.esprit.spring.services.IEntrepriseService;
 import tn.esprit.spring.services.ITimesheetService;
-
+import tn.esprit.spring.dtoEntities.EntrepriseDTo;
 @RestController
 public class RestControlEntreprise {
 
@@ -30,8 +30,9 @@ public class RestControlEntreprise {
 	ITimesheetService itimesheetservice;
 	
 	// Ajouter Entreprise : http://localhost:8081/SpringMVC/servlet/ajouterEntreprise
-
-	public int ajouterEntreprise( Entreprise ssiiConsulting) {
+	@PostMapping("/ajouterEntreprise")
+	@ResponseBody
+	public int ajouterEntreprise(@RequestBody EntrepriseDTo ssiiConsulting) {
 		ientrepriseservice.ajouterEntreprise(ssiiConsulting);
 		return ssiiConsulting.getId();
 	}

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,14 +27,7 @@ public class RestControlTimesheet {
 	@Autowired
 	ITimesheetService itimesheetservice;
 	
-	// http://localhost:8081/SpringMVC/servlet/ajouterMission
-	//{"id":4,"name":"mamission", "description":"c ma mission"}
-	@PostMapping("/ajouterMission")
-	@ResponseBody
-	public int ajouterMission(@RequestBody Mission mission) {
-		itimesheetservice.ajouterMission(mission);
-		return mission.getId();
-	}
+
 
 	// http://localhost:8081/SpringMVC/servlet/affecterMissionADepartement/4/4
 	@PutMapping(value = "/affecterMissionADepartement/{idmission}/{iddept}") 

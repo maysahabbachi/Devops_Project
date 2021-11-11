@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tn.esprit.spring.converter.EmployeConverter;
 import tn.esprit.spring.dtoEntities.EmployeDTo;
-import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Entreprise;
@@ -100,21 +99,9 @@ public class EmployeServiceImpl implements IEmployeService {
 		}
 	} 
 	
-	// Tablesapce (espace disque) 
 
-	public int ajouterContrat(Contrat contrat) {
-		contratRepoistory.save(contrat);
-		return contrat.getReference();
-	}
 
-	public void affecterContratAEmploye(int contratId, int employeId) {
-		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
 
-		contratManagedEntity.setEmploye(employeManagedEntity);
-		contratRepoistory.save(contratManagedEntity);
-		
-	}
 
 	public String getEmployePrenomById(int employeId) {
 		Employe employeManagedEntity = employeRepository.findById(employeId).get();
@@ -136,11 +123,7 @@ public class EmployeServiceImpl implements IEmployeService {
 		l.info(" deleteEmployeById with id : "+employeId + "is Done");
 	}
 
-	public void deleteContratById(int contratId) {
-		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
-		contratRepoistory.delete(contratManagedEntity);
 
-	}
 
 	public int getNombreEmployeJPQL() {
 		l.info("Starting getNombreEmployeJPQL");
@@ -189,5 +172,7 @@ public class EmployeServiceImpl implements IEmployeService {
 		l.info("Starting getAllEmployes");
 		return (List<Employe>) employeRepository.findAll();
 	}
+	
+	
 
 }

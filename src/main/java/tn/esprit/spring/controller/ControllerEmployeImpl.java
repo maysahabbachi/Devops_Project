@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import tn.esprit.spring.dtoEntities.EmployeDTo;
-import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.entities.Mission;
@@ -185,16 +184,6 @@ public class ControllerEmployeImpl  {
 		employeService.desaffecterEmployeDuDepartement(employeId, depId);
 	}
 
-	public int ajouterContrat(Contrat contrat) {
-		employeService.ajouterContrat(contrat);
-		return contrat.getReference();
-	}
-
-	public void affecterContratAEmploye(int contratId, int employeId)
-	{
-		employeService.affecterContratAEmploye(contratId, employeId);
-	}
-
 
 	public String getEmployePrenomById(int employeId) {
 		return employeService.getEmployePrenomById(employeId);
@@ -203,9 +192,6 @@ public class ControllerEmployeImpl  {
 	public void deleteEmployeById(int employeId) {
 		employeService.deleteEmployeById(employeId);
 
-	}
-	public void deleteContratById(int contratId) {
-		employeService.deleteContratById(contratId);
 	}
 
 	public int getNombreEmployeJPQL() {
@@ -227,10 +213,6 @@ public class ControllerEmployeImpl  {
 
 	}
 
-	public void deleteAllContratJPQL() {
-		employeService.deleteAllContratJPQL();
-
-	}
 
 	public float getSalaireByEmployeIdJPQL(int employeId) {
 		return employeService.getSalaireByEmployeIdJPQL(employeId);

@@ -1,58 +1,70 @@
 package tn.esprit.spring.services;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import java.util.List;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tn.esprit.spring.converter.ContratConverter;
+import tn.esprit.spring.dtoEntities.ContratDTo;
 import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.repository.ContratRepository;
-import tn.esprit.spring.repository.EmployeRepository;
 
 @Service
 public class ContratServiceImpl implements IContratService {
 
-
+	
 	@Autowired
 	ContratRepository contratRepository;
 	@Autowired
-	EmployeRepository employeRepository;
-	
-	
+	ContratConverter converter;
 	private static final Logger l = LogManager.getLogger(ContratServiceImpl.class);
+	
+	public Integer ajouterContrat(ContratDTo  NouveauContrat) {
+		
+		try{
+			Contrat contrat=converter.contdto(NouveauContrat);
+			contratRepository.save(contrat);
+			return contrat.getReference();
+		} catch (Exception e) {
+			l.error("erreur dans la methode ajouterContrat() :"+e);
+			return null;
+		}
+       
+	}
+	
+	public int deleteContratById(int contratId) {
+		l.info("In deleteContratById() ");
+		try {
+			Optional<Contrat> contrat=contratRepository.findById(contratId);
+			if (contrat.isPresent()) {
+				l.debug("contrat portant l'id :  "+contratId +" est recupére avec succés");
+			
+				contratRepository.delete(contrat.get());	
+			l.info("Out deleteContratById() ");
+			return 1;
+			} 
+		} catch (Exception e) {
+			l.error("erreur methode deleteContratById() :" + e);
+			return 0;
+		}
+		return -1;
 
-
+	}
+	
 	public List<Contrat> getAllContrats() {
-		
-		l.info("In getAllContrats() : ");
-		
-		l.debug("La liste des contrats du BD");
-		
-		l.info("Out getAllContrats() ");		
-		
+        l.info("In getAllContrats() : ");
+		l.debug("Récupération des contrats");
+		l.info("Out getAllContrats() ");
 		return (List<Contrat>) contratRepository.findAll();
 	}
 	
+
+
 	
-	public Integer ajouterContrat(Contrat contrat) {
-		l.debug("In ajouterContrat");
-		try{
-			contratRepository.save(contrat);
-			l.info("Contrat ajouter avec reference = "+contrat.getReference());
-			l.debug("Out ajouterContrat");
-			return contrat.getReference();
-		} catch (Exception e) {
-			l.error("erreur dans l'ajout :"+e);
-			return null;
-		}
-	}
-	
-	
-	public void deleteAllContratJPQL() {
-		l.debug("In deleteAllContrat ");
-		employeRepository.deleteAllContratJPQL();
-		l.info("Liste de contrats supprimé");
-	}
+
 
 }

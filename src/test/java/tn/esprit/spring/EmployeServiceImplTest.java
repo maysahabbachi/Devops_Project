@@ -2,12 +2,6 @@ package tn.esprit.spring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.when;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import tn.esprit.spring.dtoEntities.EmployeDTo;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Role;
 import tn.esprit.spring.repository.EmployeRepository;
@@ -39,7 +32,7 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class EmployeServiceImplTest {
-	private static final Logger l = LogManager.getLogger(EmployeServiceImpl.class);
+	//private static final Logger l = LogManager.getLogger(EmployeServiceImpl.class);
 	@Mock
 	@Autowired
 	private EmployeRepository employeRepository;
@@ -54,7 +47,7 @@ public class EmployeServiceImplTest {
 
 	private Employe employe1;
 
-	private static String mail = "mohamedneji.ghazouani@esprit.tn";
+	//private static String mail = "mohamedneji.ghazouani@esprit.tn";
 
 
 	@Before

@@ -11,6 +11,9 @@ import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.repository.DepartementRepository;
 import tn.esprit.spring.repository.EntrepriseRepository;
+import tn.esprit.spring.dtoEntities.EntrepriseDTo;
+import tn.esprit.spring.converter.EntrepriseConverter;
+
 
 @Service
 public class EntrepriseServiceImpl implements IEntrepriseService {
@@ -19,9 +22,11 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
     EntrepriseRepository entrepriseRepoistory;
 	@Autowired
 	DepartementRepository deptRepoistory;
-	
-	public int ajouterEntreprise(Entreprise entreprise) {
-		entrepriseRepoistory.save(entreprise);
+	@Autowired
+    EntrepriseConverter converter;
+	public Integer ajouterEntreprise(EntrepriseDTo entreprise) {
+		Entreprise entre = converter.entrepriseTodo(entreprise);
+		entrepriseRepoistory.save(entre);
 		return entreprise.getId();
 	}
 
