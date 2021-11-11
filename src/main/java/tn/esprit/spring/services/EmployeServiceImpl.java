@@ -3,7 +3,7 @@ package tn.esprit.spring.services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Optional;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,21 +65,21 @@ public class EmployeServiceImpl implements IEmployeService {
 	@Transactional	
 	public void affecterEmployeADepartement(int employeId, int depId) {
 		l.info("START affecterEmployeADepartement with employeId : "+employeId + "and depId : "+depId);
-		Departement depManagedEntity = deptRepoistory.findById(depId).get();
+		Optional<Departement> depManagedEntity = deptRepoistory.findById(depId);
 		Employe employeManagedEntity = employeRepository.findById(employeId).get();
 		l.trace("Début Test : verifier si le departement na aucun employe");
-		if(depManagedEntity.getEmployes() == null){
+		if(depManagedEntity.get().getEmployes() == null){
 			l.trace("Entrer Test : le departement na aucun employe");
 			List<Employe> employes = new ArrayList<>();
 			employes.add(employeManagedEntity);
-			depManagedEntity.setEmployes(employes);
+			depManagedEntity.get().setEmployes(employes);
 		}else{
 			l.trace("Entrer Test : le departement a des employes");
-			depManagedEntity.getEmployes().add(employeManagedEntity);
+			depManagedEntity.get().getEmployes().add(employeManagedEntity);
 		}
 
 		// à ajouter? 
-		deptRepoistory.save(depManagedEntity); 
+		deptRepoistory.save(depManagedEntity.get()); 
 
 	}
 	@Transactional
@@ -104,22 +104,22 @@ public class EmployeServiceImpl implements IEmployeService {
 
 
 	public String getEmployePrenomById(int employeId) {
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
-		return employeManagedEntity.getPrenom();
+		Optional<Employe> employeManagedEntity = employeRepository.findById(employeId);
+		return employeManagedEntity.get().getPrenom();
 	}
 	 
 	public void deleteEmployeById(int employeId)
 	{l.info("Starting getEmployePrenomById with id : "+employeId);
-		Employe employe = employeRepository.findById(employeId).get();
+	Optional<Employe> employe = employeRepository.findById(employeId);
 
 		//Desaffecter l'employe de tous les departements
 		//c'est le bout master qui permet de mettre a jour
 		//la table d'association
-		for(Departement dep : employe.getDepartements()){
+		for(Departement dep : employe.get().getDepartements()){
 			dep.getEmployes().remove(employe);
 		}
 
-		employeRepository.delete(employe);
+		employeRepository.delete(employe.get());
 		l.info(" deleteEmployeById with id : "+employeId + "is Done");
 	}
 
