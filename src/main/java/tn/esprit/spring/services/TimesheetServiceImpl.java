@@ -35,11 +35,13 @@ public class TimesheetServiceImpl implements ITimesheetService {
 	EmployeRepository employeRepository;
 	
 	public int ajouterMission(Mission mission) {
+		l.info("Adding Mission");
 		missionRepository.save(mission);
 		return mission.getId();
 	}
     
 	public void affecterMissionADepartement(int missionId, int depId) {
+		l.info("Affecting Mission To Departement");
 		Optional<Mission> mission = missionRepository.findById(missionId);
 		Optional<Departement> dep = deptRepoistory.findById(depId);
 		if(mission.isPresent() && dep.isPresent()){
@@ -52,6 +54,7 @@ public class TimesheetServiceImpl implements ITimesheetService {
 		}
 
 	public void ajouterTimesheet(int missionId, int employeId, Date dateDebut, Date dateFin) {
+		l.info("Adding TimeSheet");
 		TimesheetPK timesheetPK = new TimesheetPK();
 		timesheetPK.setDateDebut(dateDebut);
 		timesheetPK.setDateFin(dateFin);
@@ -98,11 +101,13 @@ public class TimesheetServiceImpl implements ITimesheetService {
 
 	
 	public List<Mission> findAllMissionByEmployeJPQL(int employeId) {
+		l.info("Finding All Mission By Employe JPQL");
 		return timesheetRepository.findAllMissionByEmployeJPQL(employeId);
 	}
 
 	
 	public List<Employe> getAllEmployeByMission(int missionId) {
+		l.info("Getting All Employees By Mission");
 		return timesheetRepository.getAllEmployeByMission(missionId);
 	}
 
