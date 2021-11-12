@@ -63,7 +63,7 @@ public class ContratServiceImplTest {
     public void deleteTestContrat() {
 
         try {
-            L.info("----Start Test--- ");
+            L.info("---Start Test--- ");
 	L.info("----Start --- ");
             L.debug("Start Delete Contrat");
             ContratService.deleteContratById(79);
