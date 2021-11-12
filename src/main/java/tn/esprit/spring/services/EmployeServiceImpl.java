@@ -55,73 +55,91 @@ public class EmployeServiceImpl implements IEmployeService {
 
 
 	public void mettreAjourEmailByEmployeId(String email, int employeId) {
-		Employe employe = employeRepository.findById(employeId).get();
+		Optional<Employe> employeManagedEntity = employeRepository.findById(employeId);
+		Employe emp;
+		if ( employeManagedEntity.isPresent()) {
+			emp= employeManagedEntity.get();
+		
 		l.info("mettreAjourEmailByEmployeId with email :  " + email + "and employee : " + employeId);
-		employe.setEmail(email);
-		employeRepository.save(employe);
+		emp.setEmail(email);
+		employeRepository.save(emp);
 
-	}
+	}}
 
 	@Transactional	
 	public void affecterEmployeADepartement(int employeId, int depId) {
 		l.info("START affecterEmployeADepartement with employeId : "+employeId + "and depId : "+depId);
 		Optional<Departement> depManagedEntity = deptRepoistory.findById(depId);
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
+		Optional<Employe> employeManagedEntity = employeRepository.findById(employeId);
+		Departement dep;
+		Employe emp = new Employe();
 		l.trace("Début Test : verifier si le departement na aucun employe");
-		if(depManagedEntity.get().getEmployes() == null){
+if (depManagedEntity.isPresent() && employeManagedEntity.isPresent()) {
+			 
+			dep=depManagedEntity.get();
+		if(dep.getEmployes() == null){
 			l.trace("Entrer Test : le departement na aucun employe");
+			emp = employeManagedEntity.get();
 			List<Employe> employes = new ArrayList<>();
-			employes.add(employeManagedEntity);
-			depManagedEntity.get().setEmployes(employes);
+			
+			employes.add(emp);
+			dep.setEmployes(employes);
+			
 		}else{
 			l.trace("Entrer Test : le departement a des employes");
-			depManagedEntity.get().getEmployes().add(employeManagedEntity);
+			dep.getEmployes().add(emp);
 		}
 
-		// à ajouter? 
-		deptRepoistory.save(depManagedEntity.get()); 
-
+		deptRepoistory.save(dep); }
 	}
 	@Transactional
 	public void desaffecterEmployeDuDepartement(int employeId, int depId)
 	{l.info("START desaffecterEmployeDuDepartement with employeId : "+employeId + "and depId : "+depId);
 
-		Departement dep = deptRepoistory.findById(depId).get();
+	Optional <Departement> dep = deptRepoistory.findById(depId);
+	Departement dept;
 
-		int employeNb = dep.getEmployes().size();
+	if (dep.isPresent()) {
+		dept = dep.get();
+		int employeNb = dept.getEmployes().size();
 		for(int index = 0; index < employeNb; index++){
-			if(dep.getEmployes().get(index).getId() == employeId){
+			if(dept.getEmployes().get(index).getId() == employeId){
 				l.trace("Entrer Test : le departement a l'employes avec employeId : "+employeId);
-				dep.getEmployes().remove(index);
+				dept.getEmployes().remove(index);
 					l.info("remove employe from department done");
-				break;//a revoir
+				break;
 			}
 		}
 	} 
-	
+	}
 
 
 
 
 	public String getEmployePrenomById(int employeId) {
 		Optional<Employe> employeManagedEntity = employeRepository.findById(employeId);
-		return employeManagedEntity.get().getPrenom();
+		Employe emp = new Employe();
+		if (employeManagedEntity.isPresent()) {
+			emp = employeManagedEntity.get();
+			
+		}
+		return emp.getPrenom();
+
 	}
 	 
 	public void deleteEmployeById(int employeId)
 	{l.info("Starting getEmployePrenomById with id : "+employeId);
 	Optional<Employe> employe = employeRepository.findById(employeId);
-
-		//Desaffecter l'employe de tous les departements
-		//c'est le bout master qui permet de mettre a jour
-		//la table d'association
+	Employe emp;
+	if (employe.isPresent()) {
+		emp = employe.get();
 		for(Departement dep : employe.get().getDepartements()){
-			dep.getEmployes().remove(employe);
+			dep.getEmployes().remove(emp);
 		}
 
 		employeRepository.delete(employe.get());
 		l.info(" deleteEmployeById with id : "+employeId + "is Done");
-	}
+	}}
 
 
 
