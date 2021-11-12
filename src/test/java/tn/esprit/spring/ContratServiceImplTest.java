@@ -64,8 +64,8 @@ public class ContratServiceImplTest {
 
         try {
             L.info("---Start Test--- ");
-	L.info("----Start TEEST--- ");
-			L.info("----Start TEEST--- ");
+	
+	    L.debug("----Start TEST--- ");
 
             L.debug("Start Delete Contrat");
             ContratService.deleteContratById(79);
